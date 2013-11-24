@@ -16,43 +16,45 @@
 <!-- display page -->
 <!-- countdown plugin -->
 <!-- edit button / toggles to edit page-->
-<!-- what you can spend -->
-<div id="per-person">
+<div class="panel panel-default cf">
+<div class="panel-body">
+<div class="average"><!-- what you can spend -->
+<h5>You can spend</h5>
+<div id="per-person" class="amount"></div>
+<h5>per person</h5>
+</div><!--end average-->
+<div class="clear"></div>
 </div>
-<!-- shopping list -->
-<div id="list">
-    <ul>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-        <li><label></label>$<input type="text" placeholder="Actual"></li>
-    </ul>
-</div>
-<!-- status -->
 <div id="status">
-    <div id="total-budget"></div>
-    <div id="spent"></div>
-    <div id="remaining"></div>
+    <div class="status-section">
+    <h5>Total Budget</h5>
+    <div id="initial-budget" class="amount"></div>
+    </div>
+    <div class="status-section">
+    <h5>Total Spent</h5>
+    <div id="spent" class="amount"></div>
+    </div>
+    <div class="status-section">
+    <h5>Total Remaining</h5>
+    <div id="remaining" class="amount"></div>
+    </div>
 </div>
+</div><!--end panel-->
+<!-- status -->
+
 
 <!-- edit page-->
 <!-- budget entry form / field for entering budget -->
 <form id="total-budget">
-    <input type="text" id="budget-input">
+    <div class="col-lg-6">
+    <input type="text" class="spent" id="budget-input" placeholder="0.00">
+    <span class="input-group-btn">
+        <button class="btn btn-default enter-budget-button" type="submit">Enter Budget</button>
+      </span>
+    </div>
 </form>
 <!-- recipient form / enter names of gift recipients -->
 <form id="recipients">
-    <input type="text" class="recipient-input">
-    <input type="text" class="recipient-input">
-    <input type="text" class="recipient-input">
-    <input type="text" class="recipient-input">
-    <input type="text" class="recipient-input">
-    <input type="text" class="recipient-input">
     <input type="text" class="recipient-input">
     <button type="submit">Add</button><!-- submit entries and go to list or toggle between list and edit form-->
 </form>
