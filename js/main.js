@@ -4,12 +4,25 @@ var list = [{name : 'Mom', actual : '78.00', active : true},
            {name : 'Emily', actual : '54.00', active : true}, 
            {name : 'Yasmine', actual : '45.00', active : true}, 
            {name : 'Amy', actual : '28.00', active : true}];
+/*var list = [];*/
+
+//creates unique id for each person by incrementation
+function uniqueId() {
+    // Check to see if the counter has been initialized
+    if ( typeof uniqueId.counter == 'undefined' ) {
+        // It has not... perform the initilization
+        uniqueId.counter = 0;
+    }
+    return uniqueId.counter++;
+}
 
 //constructor function newPerson
 function Person(name){
     this.name = name;
     this.actual = null;
     this.active = true;
+    var id = uniqueId();
+    this.id = id;
     }
     
 function writeList (person){
@@ -18,7 +31,7 @@ function writeList (person){
             throw "Name is missing!";
         } 
         else {
-        $("<li class='list-group-item cf'>" + person.name + "<div class='actual-spent'>$<input type='text' class='amount' placeholder='0.00'></div>" + "</li>").appendTo('.list-group');
+        $("<li class='list-group-item cf'>" + person.name.charAt(0).toUpperCase() + person.name.substring(1) + "<div class='actual-spent'>$<form class='actual'><input type='text' class='amount' placeholder='0.00' id='" + person.id + "'></div></form>" + "</li>").appendTo('.list-group');
         }
     }
 
@@ -29,7 +42,7 @@ function addPerson(name) {
     }
 
 //var budgetTotal = 1000;//test data
-var actualSpent = 45.53;//test data
+var totalSpent = 100;//test data
 
 //count how many list items are active
 function countActive(){
@@ -42,18 +55,14 @@ function countActive(){
     return activeCount;
 }
 //calculate average budget per person
-function getAverage(){
+function getAverage(budgetTotal){
     var activeCount = countActive();
     //remaining budget = total budget - actual spent
-    var remaining = (budgetTotal - actualSpent);
+    var remaining = (budgetTotal - totalSpent);
     $('#remaining').append('$' + remaining.toFixed(2));
     var average = (remaining / activeCount);
     $('#per-person').append('$' + average.toFixed(2));
     }
-
-/*function totalSpent(){
-    actualSpent = justSpent + actualSpent;
-}*/
 
 $(document).ready(function() {
     //create list
@@ -65,14 +74,27 @@ $(document).ready(function() {
             console.log("Error:" + error);
         }
     }//end error handling
-    
+
     $('#total-budget').on('submit', function(event){
         event.preventDefault();
         var budgetTotal = $('#budget-input').val();
+        getAverage(budgetTotal);
         $('#initial-budget').append('$' + budgetTotal);
         $('#budget-input').val('');
     });
-     
+    
+    $('#recipients').on('submit', function(event){
+        event.preventDefault();
+        var recipient = $('#new-person').val();
+        addPerson(recipient);
+        $('input').val('');
+    }); 
+    
+    /*$('.actual').on('submit', function(event){
+        event.preventDefault();
+        var actualSpent = $('.actual').find('input').val();
+        $(this).find('input').val('');
+    });*/
 });
 
 
