@@ -1,10 +1,10 @@
 //sample data array
-var list = [{name : 'Mom', actual : '78.00', active : true}, 
+/*var list = [{name : 'Mom', actual : '78.00', active : true}, 
            {name : 'Kimberly', actual : '32.78', active : true}, 
            {name : 'Emily', actual : '54.00', active : true}, 
            {name : 'Yasmine', actual : '45.00', active : true}, 
-           {name : 'Amy', actual : '28.00', active : true}];
-/*var list = [];*/
+           {name : 'Amy', actual : '28.00', active : true}];*/
+var list = [];
 
 //creates unique id for each person by incrementation
 function uniqueId() {
@@ -39,10 +39,12 @@ function addPerson(name) {
     var newPerson = new Person(name);
     list.push(newPerson);
     writeList(newPerson);
+    getActualSpentId();
     }
 
-//var budgetTotal = 1000;//test data
-var totalSpent = 100;//test data
+//test data
+//var budgetTotal = 1000;
+//var totalSpent = 100; 
 
 //count how many list items are active
 function countActive(){
@@ -63,6 +65,23 @@ function getAverage(budgetTotal){
     var average = (remaining / activeCount);
     $('#per-person').append('$' + average.toFixed(2));
     }
+
+//on submit grab value assign it to Person "actual" and change status to false  
+function getActualSpentId(){
+    $('.actual').on('submit', function(event){
+        event.preventDefault();
+    var actualSpent = $(this).find('input').val();
+    console.log(actualSpent);
+    console.log($(this).find('input').attr('id'));
+    for (var i=0; i < list.length; i++){
+        if ($(this).find('input').attr('id') == list[i].id){
+             list[i].actual = actualSpent;
+             list[i].active = false;
+        }
+    }
+    $(this).find('input').val('');
+});
+}
 
 $(document).ready(function() {
     //create list
@@ -92,9 +111,12 @@ $(document).ready(function() {
     
     /*$('.actual').on('submit', function(event){
         event.preventDefault();
-        var actualSpent = $('.actual').find('input').val();
+        var actualSpent = $(this).find('input').val();
+        console.log(actualSpent);
+        console.log($(this).find('input').attr('class'));
         $(this).find('input').val('');
     });*/
+
 });
 
 
