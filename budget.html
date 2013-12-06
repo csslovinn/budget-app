@@ -17,50 +17,71 @@
 <!-- countdown plugin -->
 <!-- edit button / toggles to edit page-->
 <div class="panel panel-default cf">
-<div class="panel-body">
+<section class="panel-body" id="list">
+<form id="edit-button">
+    <button type="submit">Edit</button>
+</form>
 <div class="average"><!-- what you can spend -->
-<h5>You can spend</h5>
-<div id="per-person" class="amount"></div>
+<h5>Budget</h5>
+<div id="per-person" class="amount">$</div>
 <h5>per person</h5>
 </div><!--end average-->
 <div class="clear"></div>
-</div>
-<div id="status">
+<section id="place-list"></section>
+<!--begin status section -->
+<section id="status" class="cf">
     <div class="status-section">
-    <h5>Total Budget</h5>
-    <div id="initial-budget" class="amount"></div>
+    <div class="status-content">
+    <h5>Budget</h5>
+    <div id="initial-budget" class="amount">$</div>
+    </div>
     </div>
     <div class="status-section">
-    <h5>Total Spent</h5>
-    <div id="spent" class="amount"></div>
+    <div class="status-content">
+    <h5>Spent</h5>
+    <div id="spent" class="amount">$</div>
+    </div>
     </div>
     <div class="status-section">
-    <h5>Total Remaining</h5>
-    <div id="remaining" class="amount"></div>
+    <div class="status-content">
+    <h5>Remaining</h5>
+    <div id="remaining" class="amount">$</div>
     </div>
-</div>
-</div><!--end panel-->
-<!-- status -->
-
-
-<!-- edit page-->
+    </div>
+</section><!--end status section -->
+</section><!--end list-->
+<div id="edit-page" class="panel-body"> <!--begin edit page-->
 <!-- budget entry form / field for entering budget -->
-<form id="total-budget">
-    <div class="col-lg-6">
-    <input type="text" class="spent" id="budget-input" placeholder="0.00">
-    <span class="input-group-btn">
-        <button class="btn btn-default enter-budget-button" type="submit">Enter Budget</button>
-      </span>
-    </div>
-</form>
+<section class="form-area">
+<section id="set-up-1">
 <!-- recipient form / enter names of gift recipients -->
 <form id="recipients">
-    <input type="text" class="recipient-input" id="new-person" placeholder="Enter recipient name">
-    <button type="submit">Add</button><!-- submit entries and go to list or toggle between list and edit form-->
+    <label>Add recipients to your shopping list</label>
+    <input type="text" class="add-input" id="new-person" placeholder="Enter recipient name">
+    <button type="submit">Add New Recipient</button><!-- submit entries and go to list or toggle between list and edit form-->
 </form>
-<!-- edit page-->
-
-
+<form id="recipients-done">
+    <button type="submit">Done</button>
+</form>
+</section>
+<section id="set-up-2">
+<form id="total-budget">
+    <label>Enter your total budget for the season</label>
+    <input type="text" id="budget-input" class="add-input" placeholder="0.00">
+    <span class="input-group-btn">
+        <button class="enter-budget-button" type="submit">Submit Total Budget</button>
+      </span>
+</form>
+<form id="budget-done">
+    <button type="submit">Done</button>
+</form>
+</section>
+<!--<form id="view-list">
+    <button type="submit">View List</button>
+</form>-->
+</section>
+</div><!-- end edit page-->
+</div><!--end panel-->
 </div>
 </body>
 </html>
