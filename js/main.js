@@ -1,10 +1,10 @@
+//var list = [];
 //sample data array
-/*var list = [{name : 'Mom', actual : '78.00', active : true}, 
+var list = [{name : 'Mom', actual : '78.00', active : true}, 
            {name : 'Kimberly', actual : '32.78', active : true}, 
            {name : 'Emily', actual : '54.00', active : true}, 
            {name : 'Yasmine', actual : '45.00', active : true}, 
-           {name : 'Amy', actual : '28.00', active : true}];*/
-var list = [];
+           {name : 'Amy', actual : '28.00', active : true}];
 
 //creates unique id for each person by incrementation
 function uniqueId() {
@@ -28,7 +28,7 @@ function Person(name){
 //generates list    
 function writeList (person){
         //check for missing person name data
-        if (typeof person.name == 'undefined'){
+        if (person.name === ""){
             throw "Name is missing!";
         } 
         else {
@@ -47,7 +47,7 @@ function addPerson(name) {
 function countActive(){
     var activeCount = 0;
     for (var i=0; i < list.length; i++){
-        if (list[i].active == true){
+        if (list[i].active === true){
         activeCount++;
         }
     }
@@ -59,9 +59,7 @@ function totalISpent(){
     var spent = 0;
     for (var i=0; i < list.length; i++){
         if ($.isNumeric(list[i].actual)) {
-        spent += parseInt(list[i].actual);
-        }else {
-            i++;
+        spent += parseInt(list[i].actual, 10);
         }
     }
     $('#spent-so-far').remove();
@@ -102,7 +100,19 @@ function getActualSpentId(){
 }
 
 $(document).ready(function() {
-    //default hide list
+    //get list data from local storage
+    var listData = localStorage.getItem('list');
+    console.log(('listData: ', JSON.parse(listData)));//test, remove console.log
+    console.log(listData);//test only, remove
+    
+    //get budget data from local storage
+    var budgetData = localStorage.getItem('budgetTotal');
+    console.log(('budgetData: ', JSON.parse(budgetData)));//test, remove console.log
+    
+    localStorage.clear();
+    
+    
+     //default hide list
     $('#list').hide();
     $('#set-up-2').hide();
     //create list
@@ -113,7 +123,8 @@ $(document).ready(function() {
         }catch(error){
             console.log("Error:" + error);
         }
-    }//end error handling
+    }
+    //end error handling
 
     $('#total-budget').on('submit', function(event){
         event.preventDefault();
@@ -122,13 +133,16 @@ $(document).ready(function() {
         $('#budget-total').remove();
         $('#initial-budget').append("<div id='budget-total'>" + budgetTotal +"</div>");
         $('#budget-input').val('');
+        localStorage.setItem('budgetTotal', JSON.stringify(budgetTotal));
     });
+
     
     $('#recipients').on('submit', function(event){
         event.preventDefault();
         var recipient = $('#new-person').val();
-        addPerson(recipient);
         $('input').val('');
+        addPerson(recipient);
+        localStorage.setItem('list', JSON.stringify(list));
     }); 
     
     $('#recipients-done').on('submit', function(event){
@@ -161,7 +175,6 @@ $(document).ready(function() {
     
     totalISpent();
     getActualSpentId();
-
 });
 
 
