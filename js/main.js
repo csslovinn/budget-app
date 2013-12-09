@@ -109,7 +109,7 @@ $(document).ready(function() {
     var budgetData = localStorage.getItem('budgetTotal');
     console.log(('budgetData: ', JSON.parse(budgetData)));//test, remove console.log
     
-    localStorage.clear();
+    //localStorage.clear();
     
     
      //default hide list
