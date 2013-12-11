@@ -1,10 +1,4 @@
-//var list = [];
-//sample data array
-var list = [{name : 'Mom', actual : '78.00', active : true}, 
-           {name : 'Kimberly', actual : '32.78', active : true}, 
-           {name : 'Emily', actual : '54.00', active : true}, 
-           {name : 'Yasmine', actual : '45.00', active : true}, 
-           {name : 'Amy', actual : '28.00', active : true}];
+var list = [];
 
 //creates unique id for each person by incrementation
 function uniqueId() {
@@ -27,11 +21,14 @@ function Person(name){
 
 //generates list    
 function writeList (person){
-        //check for missing person name data
+        //check for and do not allow empty input for recipient name
         if (person.name === ""){
             throw "Name is missing!";
-        } 
+        } if (person.active === false){
+           $("<li class='list-group-item cf done'>" + person.name.charAt(0).toUpperCase() + person.name.substring(1) + "<div class='actual-spent'>$<form class='actual'><input type='text' class='amount' placeholder='0.00' id='" + person.id + "' pattern='^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$'></div></form></li>").appendTo('.list-group'); 
+        }
         else {
+        //even though removed, keep full structure of li to keep intact for future features
         $("<li class='list-group-item cf'>" + person.name.charAt(0).toUpperCase() + person.name.substring(1) + "<div class='actual-spent'>$<form class='actual'><input type='text' class='amount' placeholder='0.00' id='" + person.id + "' pattern='^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$'></div></form></li>").appendTo('.list-group');
         }
     }
@@ -75,8 +72,12 @@ function getAverage(budgetTotal){
     $('#total-remaining').remove();
     $('#remaining').append("<div id='total-remaining'>" + remaining.toFixed(2) + "</div>");
     var average = (remaining / activeCount);
-    $('#average-budget').remove();
-    $('#per-person').append("<div id='average-budget'>" + average.toFixed(2) + "</div>");
+    if ($.isNumeric(average)){
+        $('#average-budget').remove();
+        $('#per-person').append("<div id='average-budget'>" + average.toFixed(2) + "</div>");
+    } else {
+        $('#per-person').append("<div id='average-budget'></div>");
+    }
     }
 
 //on submit grab value assign it to Person "actual" and change status to false, recalculate total spent  
@@ -88,6 +89,7 @@ function getActualSpentId(){
         if ($(this).find('input').attr('id') == list[i].id){
              list[i].actual = actualSpent;
              list[i].active = false;
+             localStorage.setItem('list', JSON.stringify(list));
         }
     }
     totalISpent();
@@ -100,26 +102,34 @@ function getActualSpentId(){
 }
 
 $(document).ready(function() {
+    
     //get list data from local storage
-    var listData = localStorage.getItem('list');
-    console.log(('listData: ', JSON.parse(listData)));//test, remove console.log
-    console.log(listData);//test only, remove
-    
+    if (localStorage.getItem('list') !== null){
+        list = JSON.parse(localStorage.getItem('list'));
+        //show list if data is already present
+        $('#edit-page').hide();
+        $('#list').show();
+    } else {
+        //default to set-up if no data present
+        $('#list').hide();
+        $('#set-up-2').hide();
+    }
+
     //get budget data from local storage
-    var budgetData = localStorage.getItem('budgetTotal');
-    console.log(('budgetData: ', JSON.parse(budgetData)));//test, remove console.log
-    
+    if (localStorage.getItem('budgetTotal') !== null){
+        var budgetTotal = JSON.parse(localStorage.getItem('budgetTotal'));
+        getAverage(budgetTotal);
+        $('#budget-total').remove();
+        $('#initial-budget').append("<div id='budget-total'>" + budgetTotal +"</div>");
+    }
+
     //localStorage.clear();
-    
-    
-     //default hide list
-    $('#list').hide();
-    $('#set-up-2').hide();
+     
     //create list
     $("<ul class='list-group'>").appendTo("#place-list");
-    for (var i=0; i < list.length; i++){
+    for (var j=0; j < list.length; j++){
         try {
-            writeList(list[i]);
+            writeList(list[j]);
         }catch(error){
             console.log("Error:" + error);
         }
@@ -142,6 +152,8 @@ $(document).ready(function() {
         var recipient = $('#new-person').val();
         $('input').val('');
         addPerson(recipient);
+        var budgetTotal = $('#budget-total').text();
+        getAverage(budgetTotal); //this doesn't work here without budgetTotal
         localStorage.setItem('list', JSON.stringify(list));
     }); 
     
@@ -165,6 +177,7 @@ $(document).ready(function() {
         $('#list').hide();
         $('#edit-page').show();
         $('#set-up-1').show();
+        $('#set-up-2').hide();
     });
 
     $('#view-list').on('submit', function(event){
